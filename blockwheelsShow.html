@@ -58,48 +58,98 @@
 									<p>Inspired by Hotwheels, BlockWheels is a fully interactive JavaScript and HTML5 Canvas side-scroller game. This is a survival game, the longer the distance travel the greater the score. If you crash or fall off the tracks, the game is over. First project as a software engineer.</p>
 									<p><a href="https://connorn314.github.io/BlockWheels/">This is a link to the live site</a>.</p>
 									<p><a href="https://github.com/connorn314/BlockWheels">This is a link to the Github Repo</a>.</p>
-
+									
 							<!-- Image -->
 								<section>
 									<h2>Video Walkthrough</h2>
-									<iframe src="https://drive.google.com/file/d/1b5QSDkixKJW1C4ciqNL9rmJTWUynwL6R/preview" width="880" height="480" allow="autoplay"></iframe>
+									<iframe src="https://drive.google.com/file/d/1rtvFUWdZtSIBEmHKPyjYl90h4zLyR5X-/preview" width="880" height="480" allow="autoplay"></iframe>
+									<br />
+									<br />
+									<h2>Technologies</h2>
+										<ul>
+											<li>JavaScript</li>
+											<li>Canvas API</li>
+											<li>HTML5/CSS</li>
+											<li>Webpack/Babel</li>
+										</ul>
+									<h2>Lead Developer</h2>
+										<ul>
+											<li>Designed a dynamic 6-point hit box (even while rotating) for the car by incorporating JavaScript built-in trigonometric functions
+												to track all four corners and 2 sides relative to cars central point and angle to ground, consistently outperforming canvas’ built-in
+												collision function.</li>
+											<li>Created car rotation mechanic only while airborne by synchronizing canvas built-in image rotation vector with car rotation vector,
+												in order to give the user more control over their landings.</li>
+											<li>Built a sliding functionality (by incrementing x and y positioning proportionately to the slope of given ramp) for the car when
+												grounded in order to replicate the effect of wheels in real life and create an overall smoother user experience.</li>
+										</ul>
 								</section>
 									<br />
 									<h3>Code Snippets</h3>
-									<pre><code>i = 0;
+                  <h4>Jbuilder</h4>
+									<pre><code>isBoundBy(){
+  // bottom left, top left, top right, bottom right
+  let angleOne = this.vector + this.theta  // bottom right angle
+  let angleTwo = this.vector - this.theta // top right angle
+  let angleThree = -this.vector + this.theta // bottom left angle
+  let angleFour = -this.vector - this.theta // top left angle
+  let angleFive = this.vector // right
+  let angleSix = -this.vector // left
+  let cornerArray = [angleOne, angleTwo, angleThree, angleFour]
+  let sideArray = [angleFive, angleSix]
+  let coordinateArray = []
+  cornerArray.forEach ((angle, i) => {
+      let x = this.hypotenuse * Math.cos(angle)
+      let y = this.hypotenuse * Math.sin(angle)
+      if (i < 2){
+          coordinateArray.push([this.center[0] + x, this.center[1] + y])
+      } else {
+          coordinateArray.push([this.center[0] - x, this.center[1] + y])
+      }
+  })
+  this.hitBox.bottomRight = coordinateArray[0]
+  this.hitBox.topRight = coordinateArray[1]
+  this.hitBox.bottomLeft = coordinateArray[2]
+  this.hitBox.topLeft = coordinateArray[3]
 
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
-
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+  sideArray.forEach ((angle, i) => {
+    let x = (CONSTANTS.CAR_WIDTH/2) * Math.cos(angle)
+    let y = (CONSTANTS.CAR_WIDTH/2) * Math.sin(angle)
+    if (i === 0){
+        coordinateArray.push([this.center[0] + x, this.center[1] + y])
+    } else {
+        coordinateArray.push([this.center[0] - x, this.center[1] + y])
+    }
+  })
+  this.hitBox.rightSide = coordinateArray[4]
+  this.hitBox.leftSide = coordinateArray[5]
+}</code></pre>
+<p>The above snippet is from the car class and defines it's hitbox at a given instance:</p>
+					<ul>
+					<li><code>this.theta</code> is the single angle needed to find the for relative corners of the rectangular "car" at any given moment if the vector of the car is known.</li>
+					<li>With each call, this function updates the car's hitbox property which contains six key value pairs (keys being the locations on the car, values being coordinates).</li>
+					<li>By utilizing a JavaScript Object (POJO) data structure to store the hitbox rather than an array, we can more easily differentiate between the "wheels" hitting the track and the "hood/trunk" hitting the track which would actually be game over.</li>
+					</ul>
 							</section>
 						</div>
 					</div>
 
 				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<section>
-								<h2>Follow</h2>
-								<ul class="icons">
-									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
-								</ul>
-							</section>
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</footer>
+        <footer id="footer">
+          <div class="inner">
+            <section>
+              <h2>Follow</h2>
+              <ul class="icons">
+                <li><a href="https://github.com/connorn314" class="icon brands style2 fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                <li><a href="https://angel.co/u/connor-norton-2" class="icon brands style2 fa-angellist" target="_blank"><span class="label">Angellist</span></a></li>
+                <li><a href="https://www.linkedin.com/in/connor-norton-318b0a19a/" class="icon solid style2 " target="_blank"><i class="fab fa-linkedin-in"></i><span class="label">Linkedin</span></a></li>
+                <li><a href="mailto:connorn314@gmail.com" class="icon solid style2 fa-envelope" target="_blank"><span class="label">Email</span></a></li>
+              </ul>
+            </section>
+            <ul class="copyright">
+              <li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+          </div>
+        </footer>
 			</div>
 
 		<!-- Scripts -->

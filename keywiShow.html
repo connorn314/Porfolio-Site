@@ -63,62 +63,80 @@
 								<section>
 									<h2>Video Walkthrough</h2>
 									<iframe src="https://drive.google.com/file/d/1b5QSDkixKJW1C4ciqNL9rmJTWUynwL6R/preview" width="880" height="480" allow="autoplay"></iframe>
+									<br />
+									<br />
+									<h2>Technologies</h2>
+										<ul>
+											<li>React/JavaScript</li>
+											<li>Redux</li>
+											<li>Express/Node.js</li>
+											<li>Mongoose</li>
+											<li>MongoDB</li>
+											<li>AWS S3</li>
+
+										</ul>
+									<h2>Backend/Team Lead</h2>
+										<ul>
+											<li>As both backend and overall team lead, I developed all backend express routers and mongoose models/validations, as well as
+												front end implementation of the follow feature and AWS S3 storage of profile photos.</li>
+											<li>Applying express.js I created full CRUD routing functionality with custom validation for keybinds based on the game’s valid
+												movements and the controller’s valid inputs.</li>
+											<li>To improve the security of the project’s database, I utilized Mongoose’s Map schema type for the keybind object creating a more
+												specific database constraint as only the hashmap data structure would be accepted..</li>
+										</ul>
 								</section>
 									<br />
 									<h3>Code Snippets</h3>
-									<pre><code>i = 0;
+									<h4>Express custom validator</h4>
+									<pre><code>const pcInputs = ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0",  "Minus", "Equal", "Backspace", "Tab", "KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Backslash", "CapsLock", "KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Return", "Enter", "ShiftLeft", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "ShiftRight", "ControlLeft", "AltLeft", "MetaLeft", "Space", "MetaRight", "AltRight", "ControlRight", "Escape", "LButton", "RButton", "MButton", "WheelDown", "WheelUp"]
 
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
+const xboxOneInputs = ["Left stick", "Left stick click", "Left bumper", "Left Trigger", "View button", "Xbox button", "Menu button", "Right bumper", "Directional pad up", "Directional pad down", "Directional pad left", "Directional pad right", "Right Trigger", "Right stick", "Right stick click", "X button", "Y button", "A button", "B button", "Home button", "Start button", "Right start button"]
+
+const gameCubeInputs = ["Left trigger", "Right trigger", "Z button", "Control stick", "Y button", "X button", "A button", "B button", "Start pause button", "Directional pad up", "Directional pad down", "Directional pad left", "Directional pad right", "C-stick"]
+
+const controlOptions = {
+  "pc": pcInputs,
+  "xbox-one": xboxOneInputs,
+  "game-cube": gameCubeInputs
 }
 
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
-							</section>
+const validateBindingInput = [
+  check('keyBinds').custom(async (value, {req, next}) => {
+    let game = await Game.findById(req.body.game)
+    Object.keys(value).forEach(movement => {
+      if (!game.validMovements.includes(movement) || !controlOptions[req.body.controller].includes(value[movement])){
+        return next();
+      }
+    })
+  }).withMessage("invalid movement or key for controller or game"),
+  handleValidationErrors
+];
+</code></pre>
+<p>The above snippet is from the createBinding validation in backend:</p>
+                  <ul>
+                    <li>Utilizes JavaScript async-await functionality to fetch game only once, then iterates through the key-value pairs of the binding checking that both movement and controller input are valid to them respective game and controller.</li>
+                    <li>This validation will allow multiple movements to the same controller input by design.</li>
+                  </ul>
 						</div>
 					</div>
 
 				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<section>
-								<h2>Get in touch</h2>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<input type="text" name="name" id="name" placeholder="Name" />
-										</div>
-										<div class="field half">
-											<input type="email" name="email" id="email" placeholder="Email" />
-										</div>
-										<div class="field">
-											<textarea name="message" id="message" placeholder="Message"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send" class="primary" /></li>
-									</ul>
-								</form>
-							</section>
-							<section>
-								<h2>Follow</h2>
-								<ul class="icons">
-									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
-								</ul>
-							</section>
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</footer>
+				<footer id="footer">
+          <div class="inner">
+            <section>
+              <h2>Follow</h2>
+              <ul class="icons">
+                <li><a href="https://github.com/connorn314" class="icon brands style2 fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                <li><a href="https://angel.co/u/connor-norton-2" class="icon brands style2 fa-angellist" target="_blank"><span class="label">Angellist</span></a></li>
+                <li><a href="https://www.linkedin.com/in/connor-norton-318b0a19a/" class="icon solid style2 " target="_blank"><i class="fab fa-linkedin-in"></i><span class="label">Linkedin</span></a></li>
+                <li><a href="mailto:connorn314@gmail.com" class="icon solid style2 fa-envelope" target="_blank"><span class="label">Email</span></a></li>
+              </ul>
+            </section>
+            <ul class="copyright">
+              <li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+          </div>
+        </footer>
 			</div>
 
 		<!-- Scripts -->

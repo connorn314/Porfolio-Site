@@ -3338,7 +3338,7 @@ input, select, textarea {
 	}
 
 	#a-me-photo {
-		max-height: 90vh;
+		max-height: 95vh;
 		max-width: 30vw;
 	}
 
@@ -3350,4 +3350,15 @@ input, select, textarea {
 
 	#a-me-description {
 		margin-left: 4%;
+	}
+
+	#level-the-contents {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	#spacer {
+		width: 25px;
+		height: 15px;
 	}
